@@ -1,10 +1,10 @@
 const Discord = require('discord.js');
+const Token = require('./token')
 const Bot = new Discord.Client();
-const Token = 'NzUyMzE0MDUzNTM5NTI4Nzg0.X1V1Dw.d-3tw0JxpKMo3P170Ma_xfmNPZw';
 var Felipe, FerreiraBorges, Channels;
 var OnCallChannelMap = new Map();
 
-Bot.login(Token);
+Bot.login(Token.token());
 
 Bot.on('ready', () => {
     console.log("Bot Está Online");
