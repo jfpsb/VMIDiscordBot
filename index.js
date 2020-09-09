@@ -39,9 +39,14 @@ Bot.on('message', message => {
             channel.send("1. Confira o troco presente no caixa;\n" +
                 "2. Abra o caixa com o valor encontrado.");
             break;
+        case "!notafiscal":
+            channel.send("1. Após finalizar a venda, abrirá automaticamente a tela de envio de nota fiscal;\n" +
+            "2. CASO O CLIENTE QUEIRA, digite o CPF ou CNPJ dele e o nome ou razão social. Ao finalizar esta etapa, APERTE NO BOTÃO VERDE onde tem escrito \"Confirmar\";\n" +
+            "3. CASO O CLIENTE NÃO INFORME SEUS DADOS, aperte no botão do meio que tem escrito \"NÃO INFORMAR CPF\".\n", {files:["imagens/enviarnfce.jpg"]});
+            break;
         case "!comandos":
             channel.send("Comandos disponíveis:\n" +
-                "!comandos, !troca, !fechamentocaixa, !aberturacaixa");
+                "!comandos, !troca, !fechamentocaixa, !aberturacaixa, !notafiscal");
             break;
     }
 
