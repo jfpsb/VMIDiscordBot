@@ -53,6 +53,15 @@ Bot.on('message', message => {
     if (message.author === FerreiraBorges) return;
 
     if (message.author === Felipe) {
+        if(!onCall) {
+            OnCallChannelMap.set(channel.id, true);    
+        }
+
+        if(message.content.toLowerCase() === "silentlyendcall") {
+            OnCallChannelMap.set(channel.id, false);
+            message.delete();
+        }
+
         if (message.content.toLowerCase() === 'endcall') {
             OnCallChannelMap.set(channel.id, false);
             channel.send("A chamada foi encerrada.")
