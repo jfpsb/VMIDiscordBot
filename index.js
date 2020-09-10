@@ -41,8 +41,8 @@ Bot.on('message', message => {
             break;
         case "!notafiscal":
             channel.send("1. Após finalizar a venda, abrirá automaticamente a tela de envio de nota fiscal;\n" +
-            "2. CASO O CLIENTE QUEIRA, digite o CPF ou CNPJ dele e o nome ou razão social. Ao finalizar esta etapa, APERTE NO BOTÃO VERDE onde tem escrito \"Confirmar\";\n" +
-            "3. CASO O CLIENTE NÃO INFORME SEUS DADOS, aperte no botão do meio que tem escrito \"NÃO INFORMAR CPF\".\n", {files:["imagens/enviarnfce.jpg"]});
+                "2. CASO O CLIENTE QUEIRA, digite o CPF ou CNPJ dele e o nome ou razão social. Ao finalizar esta etapa, APERTE NO BOTÃO VERDE onde tem escrito \"Confirmar\";\n" +
+                "3. CASO O CLIENTE NÃO INFORME SEUS DADOS, aperte no botão do meio que tem escrito \"NÃO INFORMAR CPF\".\n", { files: ["imagens/enviarnfce.jpg"] });
             break;
         case "!comandos":
             channel.send("Comandos disponíveis:\n" +
@@ -50,14 +50,16 @@ Bot.on('message', message => {
             break;
     }
 
+    // Canal de avisos não abre call
+    if (channel.id === '503954874577190924') return;
     if (message.author === FerreiraBorges) return;
 
     if (message.author === Felipe) {
-        if(!onCall) {
-            OnCallChannelMap.set(channel.id, true);    
+        if (!onCall) {
+            OnCallChannelMap.set(channel.id, true);
         }
 
-        if(message.content.toLowerCase() === "silentlyendcall") {
+        if (message.content.toLowerCase() === "silentlyendcall") {
             OnCallChannelMap.set(channel.id, false);
             message.delete();
         }
@@ -79,9 +81,9 @@ Bot.on('message', message => {
         if (Felipe.presence.status === 'idle') {
             message.reply("O computador de Felipe está ligado, mas ele não está nele agora. Aguarde.");
         } else if (Felipe.presence.status === 'offline') {
-            message.reply("Felipe não está no computador Agora. Aguarde.");
+            message.reply("Felipe não está no computador agora. Aguarde.");
         } else if (Felipe.presence.status === 'online') {
-            message.reply("Felipe está resolvendo a solicitação. Aguarde.");
+            message.reply("Felipe está disponível. Aguarde.");
         } else {
             message.reply("Aguarde.");
         }
