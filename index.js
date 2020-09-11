@@ -21,13 +21,18 @@ Bot.on('message', message => {
 
     switch (message.content) {
         case "!troca":
-            channel.send("1. Quando houver uma troca, anote o(s) produto(s) (código de barras ou referência no sistema) devolvido(s) e a quantidade devolvida;\n" +
-                "2. O valor referente aos produtos devolvidos serão considerados como CRÉDITO EM TROCA para o cliente;\n" +
-                "3. Passe os novos itens que o cliente escolheu em uma nova venda;\n" +
-                "4. Na forma de pagamento insira o valor do CRÉDITO EM TROCA como pagamento em DINHEIRO;\n" +
-                "5. Se houver diferença, insira essa diferença com a forma de pagamento que o cliente escolher (Crédito, Débito ou Dinheiro);\n" +
-                "6. Finalize a venda. Abra a tela de fechamento de caixa e insira como DESPESA o crédito em troca com o valor das mercadorias devolvidas pelo cliente. Coloque a descrição da troca como CRÉDITO EM TROCA;\n" +
-                "7. Envie por aqui os produtos devolvidos e as quantidades.");
+            channel.send("1. Abra o módulo de administração do sistema. Ele possui este ícone", { files: ["imagens/iconeadmin.png"] });
+            channel.send("2. Insira seu usuário e senha (o mesmo que você usa para abrir caixa)", { files: ["imagens/telaloginadmin.png"] });
+            channel.send("3. No menu \"Estoque\", aperte no botão \"Trocas/Devoluções\"", { files: ["imagens/menuestoquebotaotroca.png"] });
+            channel.send("4. A tela de devolução irá abrir. Para selecionar o produto que está sendo devolvido, aperte na lupa ao lado de \"Cód. de Barras\"", { files: ["imagens/telatroca.png"] });
+            channel.send("5. Você pode pesquisar produtos por código de barras ou descrição. Aperte em cima do produto que está sendo devolvido e depois aperte em \"F5 - Lançar Produto\"", { files: ["imagens/pesquisaprodutoemtroca.png"] });
+            channel.send("6. Após selecionar o produto, escreva a quantidade sendo devolvida no campo \"Quantidade\".\n" +
+                        "7. Se possuir, informe o número do cupom da venda do produto que está sendo devolvido. Caso não tenha o número, deixe escrito \"0\" (zero).\n" +
+                        "8. Em \"Gerar Crédito p/ Cliente?\" aperte na opção \"Sim\" e depois aperte na lupa para escolher o cliente (se não marcar \"Sim\" a troca não irá ser efetuada", {files: ["imagens/telatrocaescolhercliente.png"]});
+            channel.send("9. Escolha o cliente com nome \"CLIENTE CRÉDITO\". Clique nele com o mouse e depois clique em \"Ok\"", {files: ["imagens/telaescolherclienteemtroca.png"]});
+            channel.send("10. Cheque se os dados estão corretos e então aperte em \"Salvar\"", {files: ["imagens/telatrocaconfirmedados.png"]});
+            channel.send("11. Após apertar em \"Salvar\", a devolução deve aparecer na lista", {files: ["imagens/telatrocaefetuadasucesso.png"]});
+
             break;
         case "!fechamentocaixa":
             channel.send("1. TODAS as despesas e retiradas do caixa devem ser inseridas no sistema antes do fechamento de caixa;\n" +
