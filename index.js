@@ -64,6 +64,8 @@ Bot.on('message', async message => {
             break;
     }
 
+    //Comandos não iniciam chamadas
+    if(message.content.startsWith("!")) return;
     // Canal de avisos não abre call
     if (channel.id === '503954874577190924') return;
     if (message.author === FerreiraBorges) return;
