@@ -28,18 +28,15 @@ Bot.on('message', async message => {
             await channel.send("5. Você pode pesquisar produtos por código de barras ou descrição. Aperte em cima do produto que está sendo devolvido e depois aperte em \"F5 - Lançar Produto\"", { files: ["imagens/pesquisaprodutoemtroca.png"] });
             await channel.send("6. Após selecionar o produto, escreva a quantidade sendo devolvida no campo \"Quantidade\".\n" +
                 "7. Se possuir, informe o número do cupom da venda do produto que está sendo devolvido. Caso não tenha o número, deixe escrito \"0\" (zero).\n" +
-                "8. Em \"Gerar Crédito p/ Cliente?\" aperte na opção \"Sim\" e depois aperte na lupa para escolher o cliente (se não marcar \"Sim\" a troca não irá ser efetuada)", { files: ["imagens/telatrocaescolhercliente.png"] });
-            await channel.send("9. Escolha o cliente com nome \"CLIENTE CRÉDITO\". Clique nele com o mouse e depois clique em \"Ok\"", { files: ["imagens/telaescolherclienteemtroca.png"] });
-            await channel.send("10. Cheque se os dados estão corretos e então aperte em \"Salvar\"", { files: ["imagens/telatrocaconfirmedados.png"] });
-            await channel.send("11. Após apertar em \"Salvar\", a devolução deve aparecer na lista", { files: ["imagens/telatrocaefetuadasucesso.png"] });
+                "8. Em \"Gerar Crédito p/ Cliente?\" deixe na opção \"Não\"", { files: ["imagens/telatrocaescolhercliente.png"] });
+            await channel.send("09. Cheque se os dados estão corretos e então aperte em \"Salvar\"", { files: ["imagens/telatrocaconfirmedados.png"] });
+            await channel.send("10. Após apertar em \"Salvar\", a devolução deve aparecer na lista", { files: ["imagens/telatrocaefetuadasucesso.png"] });
 
-            await channel.send("AGORA PARA A NOVA VENDA:\n1. Obrigatoriamente você terá que escolher o cliente CLIENTE CRÉDITO na hora da venda. Na tela de venda, aperte a tecla \"F2\" no teclado, selecione o cliente com mouse e aperte em \"Ok\"",
-                { files: ["imagens/telavendaescolhercliente.png"] });
-            await channel.send("2. O cliente escolhido aparece junto do nome do vendedor (se não escolher o cliente a venda não irá finalizar)",
-                { files: ["imagens/telavendaclienteescolhido.png"] });
-            await channel.send("3. Na tela de pagamento, selecione a forma de pagamento CRÉDITO EM TROCA e insira o valor das mercadorias sendo devolvidas pelo cliente",
+            await channel.send("AGORA PARA A NOVA VENDA:");
+            await channel.send("1. Insira normalmente os produtos que o cliente irá levar.");
+            await channel.send("2. Na tela de pagamento, selecione a forma de pagamento CRÉDITO EM TROCA e insira o valor das mercadorias sendo devolvidas pelo cliente",
                 { files: ["imagens/telapagamentocreditoemtroca.png"] });
-            await channel.send("4. Se houver diferença, insira da forma que o cliente pagar essa diferença. Finalize a venda normalmente",
+            await channel.send("3. Se houver diferença, insira da forma que o cliente pagar essa diferença. Finalize a venda normalmente",
                 { files: ["imagens/telapagamentorestante.png"] });
             await channel.send("FIM DAS INSTRUÇÕES DE TROCA");
             break;
