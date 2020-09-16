@@ -3,6 +3,7 @@ const Token = require('./token')
 const Bot = new Discord.Client();
 var Felipe, FerreiraBorges, Channels;
 var OnCallChannelMap = new Map();
+var CanalConsole;
 
 Bot.login(Token.token());
 
@@ -10,6 +11,7 @@ Bot.on('ready', () => {
     console.log("Bot Está Online");
     Felipe = Bot.users.cache.get('280453891504603146');
     FerreiraBorges = Bot.users.cache.get('505188229948112896');
+    CanalConsole = Bot.channels.cache.get('755875094311731320');
     setChannels();
 });
 
@@ -17,7 +19,7 @@ Bot.on('message', async message => {
     if (message.author.bot) return;
 
     var channel = message.channel;
-    var onCall = OnCallChannelMap.get(channel.id);
+    var onCall = OnCallChannelMap.get(channel);
 
     switch (message.content) {
         case "!troca":
@@ -61,62 +63,94 @@ Bot.on('message', async message => {
             break;
     }
 
-    //Comandos não iniciam chamadas
-    if(message.content.startsWith("!")) return;
-    // Canal de avisos não abre call
+    // Canal de avisos não abre chamada
     if (channel.id === '503954874577190924') return;
-    if (message.author === FerreiraBorges) return;
 
-    if (message.author === Felipe) {
+    if (channel === CanalConsole) {
+        // Se for comando
+        if (message.content.startsWith("!")) {
+            var palavras = message.content.split(' ');
+            switch (palavras[0].toLowerCase()) {
+                case "!situacao":
+                    var mensagem = "Em Chamada:\n";
+                    OnCallChannelMap.forEach((valor, chave) => {
+                        mensagem += `${chave}: ${textoEmChamada(valor)}\n`;
+                    });
+                    CanalConsole.send(mensagem);
+                    break;
+                case "!end":
+                    if (palavras.length == 2) {
+                        var canalEndCall = Channels.filter(ch => {
+                            return ch.name === palavras[1].toLowerCase();
+                        });
+
+                        if (canalEndCall.size == 0) {
+                            channel.send(`Canal ${palavras[1].toLowerCase()} não existe.`);
+                        }
+                        else {
+                            var id = canalEndCall.entries().next().value[1].id;
+                            var canal = Bot.channels.cache.get(id);
+                            channel.send(`A chamada em ${canal} foi encerrada.`);
+                            OnCallChannelMap.set(canal, false);
+                        }
+                    }
+                    break;
+            }
+        }
+        return;
+    }
+    else {
+        //Comandos nos canais das lojas não iniciam chamadas
+        if (message.content.startsWith("!")) {
+            CanalConsole.send(`Comando chamado por ${channel.name}`);
+            return;
+        }
+    }
+
+    // Caso o autor da mensagem seja Ferreira ou Felipe abre uma chamada mas não responde com aviso que abriu a chamada
+    if (message.author === Felipe || message.author === FerreiraBorges) {
         if (!onCall) {
-            OnCallChannelMap.set(channel.id, true);
+            OnCallChannelMap.set(channel, true);
         }
 
-        if (message.content.toLowerCase() === "silentlyendcall") {
-            OnCallChannelMap.set(channel.id, false);
-            message.delete();
-        }
-
-        if (message.content.toLowerCase() === 'endcall') {
-            OnCallChannelMap.set(channel.id, false);
-            channel.send("A chamada foi encerrada.")
-            message.delete();
-        }
-
-        if (message.content.toLowerCase() === 'arrumei') {
-            OnCallChannelMap.set(channel.id, false);
-            channel.send("A chamada foi encerrada.")
-        }
-    } else {
+    }
+    // Quando uma loja manda mensagem
+    else {
+        // Se estiver em chamada não teste por status de Felipe
         if (onCall) return;
-        channel.send("Uma chamada foi iniciada.")
-        OnCallChannelMap.set(channel.id, true);
+        // Envia ao canal de console
+        CanalConsole.send(`Chamada aberta por ${message.author}`);
+        // Marca chamada como aberta
+        OnCallChannelMap.set(channel, true);
+        // Checa o status de Felipe
         if (Felipe.presence.status === 'idle') {
             message.reply("O computador de Felipe está ligado, mas ele não está nele agora. Aguarde.");
         } else if (Felipe.presence.status === 'offline') {
             message.reply("Felipe não está no computador agora. Aguarde.");
         } else if (Felipe.presence.status === 'online') {
-            message.reply("Felipe está disponível. Aguarde.");
+            message.reply("Felipe está disponível.");
         } else {
             message.reply("Aguarde.");
         }
     }
 });
 Bot.on('channelCreate', guildChannel => {
-    OnCallChannelMap.set(guildChannel.id, false);
-    console.log(OnCallChannelMap);
+    // Adiciona canal criado ao mapa de canais
+    OnCallChannelMap.set(guildChannel, false);
 });
 
 Bot.on('channelDelete', guildChannel => {
-    OnCallChannelMap.delete(guildChannel.id);
-    console.log(OnCallChannelMap);
+    // Remove canal deletado de mapa
+    OnCallChannelMap.delete(guildChannel);
 });
 
 function isTextChannel(channel) {
+    // Retorna true se canal for de texto
     return channel.type === 'text';
 }
 
 function setChannels() {
+    // Cria mapa de canais
     Channels = Bot.channels.cache.filter(isTextChannel);
 
     if (OnCallChannelMap.size > 0) {
@@ -124,6 +158,14 @@ function setChannels() {
     }
 
     Channels.forEach((channel) => {
-        OnCallChannelMap.set(channel.id, false);
+        if (channel !== CanalConsole)
+            OnCallChannelMap.set(channel, false);
     });
+}
+
+function textoEmChamada(valor) {
+    if (valor) {
+        return "Sim";
+    }
+    return "Não";
 }
