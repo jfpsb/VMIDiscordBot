@@ -80,6 +80,13 @@ Bot.on('message', async message => {
                     break;
                 case "!end":
                     if (palavras.length == 2) {
+                        if(palavras[1] === 'all') {
+                            OnCallChannelMap.forEach((value, key) => {
+                                OnCallChannelMap.set(key, false);
+                            });
+                            return;
+                        }
+
                         var canalEndCall = Channels.filter(ch => {
                             return ch.name === palavras[1].toLowerCase();
                         });
